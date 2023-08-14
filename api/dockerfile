@@ -1,0 +1,31 @@
+FROM node:16-alpine
+
+# Add and update timezone package
+RUN apk add --no-cache tzdata
+ENV TZ=Asia/Kuala_Lumpur
+
+
+# Receive NPM_TOKEN as a build argument, and set it as env variable
+ARG NPM_TOKEN
+ENV NPM_TOKEN ${NPM_TOKEN}
+
+
+WORKDIR /app
+
+COPY ./package*.json ./
+COPY ./.npmrc ./
+
+# Build for production
+RUN npm ci --only="production"
+
+# Copy mail templates
+RUN mkdir mail_templates
+COPY ./mail_templates/* mail_templates
+
+
+# Copy files
+COPY ./dist/app.js ./app.js
+
+
+USER node
+CMD [ "node", "app.js" ]

@@ -1,0 +1,25 @@
+{
+	"name": "api-base",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "set NODE_ENV=development&& rollup -c -w",
+		"build": "set NODE_ENV=production&& rollup -c"
+	},
+	"dependencies": {
+		"@acidleaf/sprout": "^0.1.10",
+		"bcryptjs": "^2.4.3",
+		"compression": "^1.7.4",
+		"dayjs": "^1.11.9",
+		"jsonwebtoken": "^9.0.1",
+		"mongoose": "^7.4.2"
+	},
+	"devDependencies": {
+		"@rollup/plugin-alias": "^5.0.0",
+		"@rollup/plugin-node-resolve": "^15.1.0",
+		"@rollup/plugin-run": "^3.0.1",
+		"dotenv": "^16.3.1",
+		"rollup": "^3.28.0",
+		"rollup-plugin-glob-import": "^0.5.0"
+	}
+}
