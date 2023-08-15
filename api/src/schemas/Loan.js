@@ -14,10 +14,11 @@ export default new Schema({
 		index: true,
 	},
 	
-	// Loan's status (draft, active, closed, void)
+	// Loan's current status
 	status: {
 		type: String,
 		index: true,
+		enum: [ 'draft', 'active', 'closed', 'void' ]
 	},
 	
 	// Loan item records

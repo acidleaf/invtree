@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose'
 
-export default new Schema({
+const Part = new Schema({
 	company: {
 		type: Schema.Types.ObjectId,
 		ref: 'Company',
@@ -29,6 +29,11 @@ export default new Schema({
 		index: true,
 	},
 	
+	extended: {
+		type: Map,
+		of: Schema.Types.Mixed
+	},
+	
 	
 	active: Boolean,
 	created: Schema.Types.Date,
@@ -36,3 +41,6 @@ export default new Schema({
 }, {
 	collection: 'parts'
 });
+
+
+export default Part;

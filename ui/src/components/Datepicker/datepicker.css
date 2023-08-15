@@ -1,0 +1,12 @@
+.item-list {
+	@apply grid gap-2 text-center text-lg leading-loose select-none w-full h-full;
+	.it {
+		@apply font-medium text-gray px-4 py-1 cursor-pointer transition-colors;
+		&:hover { @apply text-black bg-gray-300 dark:text-white dark:bg-gray-700; }
+		&.active, &.active:hover { @apply font-medium bg-accent text-white; }
+		&.disabled {
+			pointer-events: none;
+			@apply text-gray-300 dark:text-gray-800;
+		}
+	}
+}

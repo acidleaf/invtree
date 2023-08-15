@@ -1,0 +1,37 @@
+* { overflow: visible; }
+html, body, #app {
+	height: 100vh;
+	max-height: 100vh;
+	overflow-y: auto;
+}
+
+body {
+	@apply dark:bg-dark dark:text-gray-300;
+}
+
+hr {
+	@apply mt-2 mb-3 border-gray-300 dark:border-gray-700;
+}
+
+table {
+	th { @apply text-left; }
+	td, th { @apply px-1 py-0.5; }
+}
+
+::selection { @apply text-white bg-accent; }
+
+
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scroll::-webkit-scrollbar { display: none; }
+.hide-scroll {
+	-ms-overflow-style: none;  /* IE and Edge */
+	scrollbar-width: none;  /* Firefox */
+}
+
+.bg-adapt {
+	@apply bg-white dark:bg-dark;
+}
+.border-adapt {
+	@apply border-gray-300 dark:border-gray-700;
+}

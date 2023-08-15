@@ -1,0 +1,72 @@
+.btn {
+	@apply inline-block px-4 py-2 font-semibold text-center tracking-wider rounded-md transition-colors select-none;
+	@apply bg-slate-300 hover:bg-slate-200 dark:text-gray-800 disabled:bg-gray-100 disabled:text-gray-300 dark:disabled:bg-gray-400 dark:disabled:text-gray-300;
+	
+	&.primary { @apply bg-primary hover:bg-primary-400 text-white disabled:bg-primary-300 dark:disabled:bg-primary-700 disabled:text-primary-100 disabled:text-opacity-75; }
+	&.accent { @apply bg-accent hover:bg-accent-400 text-white disabled:bg-accent-300 dark:disabled:bg-accent-700 disabled:text-accent-100 disabled:text-opacity-75; }
+	&.success { @apply bg-success hover:bg-success-400 text-white disabled:bg-success-300 dark:disabled:bg-success-700 disabled:text-success-100 disabled:text-opacity-75; }
+	&.info { @apply bg-info hover:bg-info-400 text-white disabled:bg-info-300 dark:disabled:bg-info-700 disabled:text-info-100 disabled:text-opacity-75; }
+	&.warn { @apply bg-warn hover:bg-warn-400 text-white disabled:bg-warn-300 dark:disabled:bg-warn-700 disabled:text-warn-100 disabled:text-opacity-75; }
+	&.danger { @apply bg-danger hover:bg-danger-400 text-white disabled:bg-danger-300 dark:disabled:bg-danger-700 disabled:text-danger-100 disabled:text-opacity-75; }
+	&.gray { @apply bg-gray hover:bg-gray-400 text-white disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:text-gray-100 disabled:text-opacity-75; }
+	
+	&:disabled, &.disabled {
+		@apply cursor-not-allowed;
+		&:active { @apply pointer-events-none; }
+	}
+	
+	&.sm {
+		@apply text-sm px-2 py-1 tracking-normal rounded;
+	}
+	
+	&.loading, &[loading=true] {
+		color: transparent !important;
+		@apply relative pointer-events-none;
+		
+		&::after {
+			content: '';
+			width: 1em;
+			height: 1em;
+			left: calc(50% - (1em / 2));
+			top: calc(50% - (1em / 2));
+			position: absolute;
+			@apply block border-t-2 border-r-2 border-white rounded-full animate-spin;
+		}
+	}
+}
+
+
+/* Input label */
+.label {
+	@apply block font-medium mb-1;
+}
+.input {
+	@apply border-2 px-2 py-2 rounded-lg appearance-none tracking-wide font-medium transition-colors bg-gray-200 border-gray-200 text-gray-600 dark:border-gray-800 dark:bg-gray-800 dark:text-gray-200;
+	&:hover { @apply border-gray-300 disabled:border-gray-100 dark:border-gray-500 disabled:dark:border-gray-800; }
+	&:focus { @apply outline-none ring-accent border-accent text-gray-900 dark:text-gray-50 dark:border-accent; }
+	&::placeholder { @apply text-gray select-none; }
+	&:disabled { @apply border-gray-100 bg-gray-100 text-gray-300 dark:border-gray-800 dark:bg-gray-800 dark:text-gray-700 cursor-not-allowed; }
+	
+	&.sm { @apply text-sm px-2 py-1; }
+}
+
+
+/* Label for checkbox/radio button */
+label.input-choice {
+	@apply inline-flex items-center select-none cursor-pointer;
+}
+
+/* Selection dropdown */
+select.input {
+	/* Right padding for the dropdown arrow */
+	@apply pr-10;
+}
+option {
+	&:disabled { @apply dark:text-gray-400; }
+}
+
+/* Checkbox and radio styling */
+[type='checkbox'], [type='radio'] {
+	@apply text-accent bg-gray-300 dark:bg-gray-700 border-transparent focus:border-transparent focus:bg-gray-300 focus:ring-2 focus:ring-offset-0 focus:ring-accent;
+}
+[type='checkbox'] { @apply rounded; }

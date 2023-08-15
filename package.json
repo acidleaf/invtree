@@ -1,0 +1,16 @@
+{
+	"name": "invtree",
+	"private": true,
+	"scripts": {
+	  "dev:api": "npm run dev --prefix api",
+	  "dev:ui": "npm run dev --prefix ui",
+	  "dev": "lerna exec -- npm run dev",
+	  "build:api": "npm run build --prefix api",
+	  "build:ui": "npm run build --prefix ui",
+	  "build": "lerna exec -- npm run build"
+	},
+	"devDependencies": {
+	  "lerna": "^4.0.0"
+	}
+  }
+  

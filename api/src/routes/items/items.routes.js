@@ -31,6 +31,7 @@ export default [{
 		const item = await Item.create({
 			company: $req.user.company,
 			part: part._id,
+			
 			serialNum: $req.body.serialNum,
 			status: 'active',
 			active: true,
@@ -40,6 +41,7 @@ export default [{
 		return $res.json(item);
 	}
 }, {
+	// Update item properties
 	method: 'PUT',
 	path: '/items/:itemID',
 	scopes: [ UserScopes.ITEMS_EDIT ],
@@ -62,6 +64,7 @@ export default [{
 		return $res.json();
 	}
 }, {
+	// Mark item as inactive
 	method: 'DELETE',
 	path: '/items/:itemID',
 	scopes: [ UserScopes.ITEMS_EDIT ],

@@ -1,5 +1,7 @@
 export default {
 	COMPANY_EDIT: 'companies',
+	SCHEMA_EDIT: 'schemas',
+	
 	USER_EDIT: 'users',
 	
 	PARTS_VIEW: 'parts:view',
