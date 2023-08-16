@@ -1,5 +1,5 @@
 import jsonwebtoken from 'jsonwebtoken'
-import { generateJWT } from './_helpers'
+import { fetchConstants, generateJWT } from './_helpers'
 
 export default [{
 	method: 'POST',
@@ -25,6 +25,10 @@ export default [{
 		if (user.company != decoded.cpy) return $res.json(null);
 		
 		const jwt = generateJWT(user);
-		return $res.json({ jwt });
+		const constants = await fetchConstants($req.db, user.company);
+		return $res.json({
+			jwt,
+			constants,
+		});
 	}
 }]

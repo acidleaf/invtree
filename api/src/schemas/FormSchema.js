@@ -10,7 +10,7 @@ const FormSchemaField = new Schema({
 	// Label to display on the input
 	label: String,
 	
-	// Input element type [ text, textarea, select, radio, checkbox ]
+	// Input element type
 	elementType: {
 		type: String,
 		enum: [ 'text', 'textarea', 'select', 'radio', 'checkbox' ],
@@ -31,6 +31,18 @@ const FormSchemaField = new Schema({
 		key: String,
 		value: String,
 	}],
+	
+	// Default value
+	default: {
+		type: String,
+		default: '',
+	},
+	
+	// Whether this field is compulsory
+	required: {
+		type: Boolean,
+		default: false,
+	}
 });
 
 
@@ -44,7 +56,9 @@ export default new Schema({
 		type: String,
 		index: true,
 	},
-	schemaName: String,
+	
+	// Name of schema, usually displayed as type
+	name: String,
 	
 	// All additional fields defined by this schema
 	fields: {
@@ -56,8 +70,11 @@ export default new Schema({
 	// Layout of the form, an array of array of strings
 	// Each first level array specifies a row, second level references the formSchema field to be placed at the position
 	// Each row component's width will be split evenly with flex space-evenly
-	layout: [ [ String ] ]
+	layout: [ [ String ] ],
 	
+	
+	created: Schema.Types.Date,
+	updated: Schema.Types.Date,
 	
 }, {
 	collection: 'form_schemas'

@@ -2,7 +2,7 @@
 	<div class="h-full flex flex-col">
 		<div class="py-2 mb-1 text-center border-b border-gray-200">
 			
-			<div class="text-sm text-gray-400">InvTree</div>
+			<div class="text-sm text-gray-400">{{ appName }}</div>
 			<div v-if="isAuthenticated" class="text-xl font-medium mt-1 text-info">
 				<div>{{ userName }}</div>
 			</div>
@@ -36,6 +36,7 @@ import MultiLink from './MultiLink.vue'
 import SingleLink from './SingleLink.vue'
 import { storeToRefs } from 'pinia'
 
+const appName = import.meta.env.VITE_APP_NAME;
 
 const $router = useRouter();
 const $authStore = useAuthStore();

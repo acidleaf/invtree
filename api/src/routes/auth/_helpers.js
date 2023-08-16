@@ -28,12 +28,17 @@ export function generateJWT(data) {
 
 
 
-export async function fetchConstants(db, companyID) {
-	const { ItemCategory } = db.models;
+export async function fetchConstants(db, company) {
+	const { PartCategory, FormSchema } = db.models;
 	
-	const categories = await ItemCategory.find({ company: companyID }, 'name');
+	// Part categories
+	const partCategories = await PartCategory.find({ company }, 'name');
+	
+	// Fetch schemaIDs, they will be loaded lazily as the client needs them
+	const formSchemas = await FormSchema.find({ company }, '_id name type');
 	
 	return {
-		categories,
+		partCategories,
+		formSchemas,
 	}
 }

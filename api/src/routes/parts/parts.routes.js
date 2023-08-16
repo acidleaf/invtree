@@ -100,15 +100,30 @@ export default [{
 	scopes: [ UserScopes.PARTS_EDIT ],
 	async handler($req, $res) {
 		const partID = $req.params.partID;
-		const { Part } = $req.db.models;
+		const { Part, FormSchema } = $req.db.models;
 		
 		const part = await Part.findById(partID);
 		if (!part) return $res.error('invalid_part');
 		
+		// Basic fields
 		part.category = $req.body.category;
 		part.partNum = $req.body.partNum;
 		part.description = $req.body.description;
+		
+		// Form schema fields
+		if (part.formSchema) {
+			// Fetch schema
+			const schema = await FormSchema.findById(part.formSchema).lean();
+			
+			// Update extended data fields
+			const extendedData = $req.body.extended || {};
+			for (const i in schema.fields) {
+				if (extendedData[i] !== undefined) part.extended.set(i, extendedData[i]);
+				else part.extended.set(i, schema.fields[i].default || null);
+			}
+		}
 		await part.save();
+		
 		
 		return $res.json();
 	}

@@ -12,6 +12,7 @@ module.exports = {
     './src/**/*.{vue,js}',
   ],
   theme: {
+    darkMode: 'class',
     colors: {
       current: 'currentColor',
       transparent: 'transparent',

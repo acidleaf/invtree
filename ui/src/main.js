@@ -5,6 +5,7 @@ import $router from '@/services/Router'
 import { useAuthStore } from '@/store/Auth'
 import '@/styles/main.css'
 import Plugins from '@/plugins'
+import { loadTheme } from '@/utils/darkMode'
 
 
 
@@ -12,6 +13,7 @@ import Plugins from '@/plugins'
 (async function() {
 	// Create app instance
 	const app = createApp(App);
+	await loadTheme();
 	
 	// Init store first
 	const pinia = createPinia();

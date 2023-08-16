@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import $api from '@/services/API'
 import jwt_decode from 'jwt-decode'
 import jsrsasign from 'jsrsasign'
+import { useConstantsStore } from './Constants'
+
 
 const TOKEN_NAME = import.meta.env.VITE_APP_TOKEN_NAME;
 
@@ -89,6 +91,10 @@ export const useAuthStore = defineStore('auth', {
 				
 				const decoded = jwt_decode(jwt);
 				await this.authOK(jwt, decoded);
+				
+				// Load constants
+				const $constantsStore = useConstantsStore();
+				await $constantsStore.load(res.constants);
 				
 			} catch(err) {
 				console.error(err);

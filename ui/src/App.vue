@@ -2,11 +2,9 @@
 	<div>
 		<Navbar />
 		
-		<router-view v-slot="slotProps">
-			<transition name="fade" mode="out-in">
-				<component :is="slotProps.Component"></component>
-			</transition>
-		</router-view>
+		<Breadcrumbs />
+		<NestedRoutes />
+		
 		
 		<SidebarContainer>
 			<Sidebar />
@@ -16,11 +14,13 @@
 	</div>
 </template>
 <script setup>
+import Breadcrumbs from '@/components/Breadcrumbs.vue'
 import Navbar from '@/views/Navbar/Navbar.vue'
 import ToastContainer from '@/components/ToastContainer.vue'
 import SidebarContainer from '@/components/SidebarContainer.vue'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
 import Sidebar from '@/views/Sidebar/Sidebar.vue'
+import NestedRoutes from './layouts/NestedRoutes.vue'
 
 
 </script>

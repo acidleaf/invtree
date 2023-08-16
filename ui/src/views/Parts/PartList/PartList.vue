@@ -1,6 +1,9 @@
 <template>
 	<Container>
-		<div class="text-2xl font-semibold">{{ $route.meta.title }}</div>
+		<div class="md:flex md:items-end md:justify-between space-y-2 md:space-y-0">
+			<div class="text-2xl font-semibold">{{ $route.meta.title }}</div>
+			<RouterLink to="/parts/new" class="btn primary w-full md:w-auto">New Part</RouterLink>
+		</div>
 		<hr>
 		
 		<Search v-model="query"
@@ -32,9 +35,10 @@
 					<tr v-if="!parts.length">
 						<td :colspan="headers.length">No records available</td>
 					</tr>
-					<tr v-for="p in parts" class="border-b border-adapt">
+					
+					<tr v-for="p in parts" class="border-b border-adapt group hover:bg-gray-100 dark:hover:bg-gray-800">
 						<td>
-							<router-link :to="`/part/view/${p._id}`" class="group">
+							<router-link :to="`/parts/view/${p._id}`">
 								<div class="font-medium text-primary group-hover:text-accent">{{ p.partNum }}</div>
 								<div class="text-sm text-gray-400">{{ p.description }}</div>
 							</router-link>
