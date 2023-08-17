@@ -82,6 +82,7 @@ function renderRadio() {
 					h('input', {
 						type: 'radio',
 						value: c.key,
+						key: c.key,
 						checked: props.modelValue == c.key,
 						onInput: ev => $emit('update:modelValue', ev.target.value),
 					}),

@@ -1,5 +1,6 @@
 import UserScopes from '@/common/UserScopes'
 import PaginationMiddleware from '@/middlewares/PaginationMiddleware'
+import { Types } from 'mongoose'
 
 
 export default [{
@@ -12,10 +13,12 @@ export default [{
 			const { Part } = $req.db.models;
 			
 			// Search query
-			let $match = {};
+			const companyID = new Types.ObjectId($req.user.company);
+			let $match = { company: companyID };
 			const q = $req.query.q;
 			if (q) {
 				$match = {
+					company: companyID,
 					$or: [
 						{ partNum: { $regex: q, $options: 'i' }},
 						{ description: { $regex: q, $options: 'i' }}
@@ -29,7 +32,6 @@ export default [{
 				const order = $req.query.order ? parseInt($req.query.order) : 1;
 				$sort = { [$req.query.sort]: order };
 			}
-			
 			
 			// Aggregation pipeline for part search
 			const parts = await Part.aggregate([
@@ -69,7 +71,6 @@ export default [{
 		let part = await Part.findById(partID, '-__v');
 		if (!part || part.company != $req.user.company) return $res.error('invalid_part');
 		
-		
 		return $res.json(part);
 	}
 }, {
@@ -78,18 +79,36 @@ export default [{
 	path: '/parts',
 	scopes: [ UserScopes.PARTS_EDIT ],
 	async handler($req, $res) {
-		const { Part } = $req.db.models;
+		const { Part, FormSchema } = $req.db.models;
+		
+		// Resolve schema
+		const schemaID = $req.body.formSchema;
+		let extended = null;
+		if (schemaID) {
+			const schema = await FormSchema.findById(schemaID);
+			if (!schema) return $res.error('invalid_schema');
+			
+			const extendedData = $req.body.extended;
+			extended = new Types.Map();
+			
+			for (const i of schema.fields.keys()) {
+				const f = schema.fields.get(i);
+				if (extendedData[i]) extended.set(i, extendedData[i]);
+				else extended.set(i, f.default || null);
+			}
+		}
 		
 		const part = await Part.create({
 			company: $req.user.company,
 			category: $req.body.category,
 			partNum: $req.body.partNum,
 			description: $req.body.description,
-			formSchema: null,
+			formSchema: schemaID,
 			active: true,
+			extended,
 			created: new Date(),
+			updated: new Date(),
 		});
-		
 		
 		return $res.json(part);
 	}
@@ -109,18 +128,35 @@ export default [{
 		part.category = $req.body.category;
 		part.partNum = $req.body.partNum;
 		part.description = $req.body.description;
+		part.formSchema = $req.body.formSchema;
+		part.updated = new Date();
 		
 		// Form schema fields
 		if (part.formSchema) {
 			// Fetch schema
 			const schema = await FormSchema.findById(part.formSchema).lean();
 			
+			if (!part.extended) part.extended = new Types.Map();
+			
 			// Update extended data fields
 			const extendedData = $req.body.extended || {};
+			
+			const fieldKeys = [];
 			for (const i in schema.fields) {
+				fieldKeys.push(i);
+				
+				// Update part extended data
 				if (extendedData[i] !== undefined) part.extended.set(i, extendedData[i]);
 				else part.extended.set(i, schema.fields[i].default || null);
 			}
+			
+			// Remove extended data not in fieldKeys
+			for (const key of part.extended.keys()) {
+				if (!fieldKeys.includes(key)) part.extended.delete(key);
+			}
+		} else {
+			// No schema set, set extended to null
+			part.extended = null;
 		}
 		await part.save();
 		

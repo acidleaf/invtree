@@ -36,6 +36,7 @@ export default [{
 			status: 'active',
 			active: true,
 			created: new Date(),
+			updated: new Date(),
 		});
 		
 		return $res.json(item);

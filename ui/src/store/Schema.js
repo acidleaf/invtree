@@ -18,7 +18,15 @@ export const useSchemaStore = defineStore('schema', {
 				if (s.type == 'part') schemas[i] = s;
 			}
 			return schemas;
-		}
+		},
+		ItemSchemas() {
+			const schemas = {};
+			for (const i in this.schemas) {
+				const s = this.schemas[i];
+				if (s.type == 'item') schemas[i] = s;
+			}
+			return schemas;
+		},
 	},
 	actions: {
 		load(schemas) {

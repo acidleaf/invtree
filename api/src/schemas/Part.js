@@ -6,7 +6,6 @@ const Part = new Schema({
 		ref: 'Company',
 		index: true,
 	},
-	
 	category: {
 		type: Schema.Types.ObjectId,
 		ref: 'PartCategory',
@@ -26,7 +25,10 @@ const Part = new Schema({
 	formSchema: {
 		type: Schema.Types.ObjectId,
 		ref: 'FormSchema',
-		index: true,
+	},
+	itemSchema: {
+		type: Schema.Types.ObjectId,
+		ref: 'FormSchema',
 	},
 	
 	extended: {
@@ -37,6 +39,7 @@ const Part = new Schema({
 	
 	active: Boolean,
 	created: Schema.Types.Date,
+	updated: Schema.Types.Date,
 	
 }, {
 	collection: 'parts'

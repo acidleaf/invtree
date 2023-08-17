@@ -15,6 +15,8 @@ export default new Schema({
 		type: String,
 		index: true,
 	},
+	email: String,
+	
 	password: String,
 	active: Boolean,
 	

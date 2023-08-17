@@ -8,6 +8,24 @@
 			
 			<!-- Fixed fields -->
 			<div class="space-y-3">
+				
+				<!-- Schema selection -->
+				<div v-if="showPartSchemaList">
+					<label class="label">Part Type</label>
+					<select class="input w-full" v-model="schemaID">
+						<option :value="null" disabled>Select part type</option>
+						<option v-for="(ps, key) in PartSchemas" :value="key">{{ ps.name }}</option>
+					</select>
+				</div>
+				
+				<!-- Item schema -->
+				<div v-if="showItemSchemaList">
+					<label class="label">Item Type</label>
+					<select class="input w-full" v-model="formData.itemSchema">
+						<option v-for="is in ItemSchemas" :value="is._id">{{ is.name }}</option>
+					</select>
+				</div>
+				
 				<!-- Part number -->
 				<div>
 					<label class="label">Part Number</label>
@@ -28,14 +46,6 @@
 					<label class="label">Description</label>
 					<textarea class="input w-full" v-model.trim="formData.description" placeholder="Enter part description"></textarea>
 				</div>
-			</div>
-			
-			<div>
-				<label class="label">Part Type</label>
-				<select class="input w-full" v-model="formData.formSchema">
-					<option :value="null">Generic</option>
-					<option v-for="(ps, key) in PartSchemas" :value="key">{{ ps.name }}</option>
-				</select>
 			</div>
 			
 			<!-- Extended fields -->
@@ -61,40 +71,40 @@
 import Container from '@/layouts/Container.vue'
 import DynamicFormField from '@/components/DynamicFormField.vue'
 import { $api, $toast } from '@/services'
-import { onMounted, ref, reactive, computed } from 'vue'
+import { onMounted, ref, reactive, watch } from 'vue'
 import { useConstantsStore } from '@/store/Constants'
 import { useSchemaStore } from '@/store/Schema'
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 
-
+const $router = useRouter();
 const $schemaStore = useSchemaStore();
 const $constantsStore = useConstantsStore();
 const { partCategories } = storeToRefs($constantsStore);
-const { PartSchemas } = storeToRefs($schemaStore);
+const { PartSchemas, ItemSchemas } = storeToRefs($schemaStore);
 
 const props = defineProps([ 'partID' ]);
 const loading = ref(false);
 const submitting = ref(false);
+const showPartSchemaList = ref(false);
+const showItemSchemaList = ref(false);
 const part = ref(null);
-const schema = ref(null);
 
+const schemaID = ref(null);
+const schema = ref(null);
 
 const formData = reactive({
 	partNum: '',
 	category: null,
+	itemSchema: null,
 	description: '',
-	formSchema: null,
 });
 
 
-const showSchemaSelect = computed(() => {
-	if (props.partID) return false;
-	
-});
 
 
 function updateFormData() {
-	if (!schema.value) return;
+	if (!schema.value || !part.value) return;
 	
 	const sch = schema.value;
 	for (const i in sch.fields) {
@@ -103,12 +113,32 @@ function updateFormData() {
 		formData[i] = value;
 	}
 }
+watch(schemaID, async () => {
+	if (schemaID.value == null) {
+		schema.value = null;
+		return;
+	}
+	if (schemaID.value == schema._id) return;
+	
+	try {
+		const newSchema = await $schemaStore.resolve(schemaID.value);
+		schema.value = newSchema;
+		updateFormData();
+		
+	} catch (err) {
+		console.error(err);
+		$toast.error('Invalid schema');
+	}
+})
+
 
 function prepareFormData() {
 	const data = {
 		partNum: formData.partNum,
 		category: formData.category,
 		description: formData.description,
+		itemSchema: formData.itemSchema,
+		formSchema: schemaID.value,
 	};
 	
 	// Build schema properties
@@ -122,12 +152,33 @@ function prepareFormData() {
 	return data;
 }
 
+
+function validate() {
+	if (!formData.partNum) {
+		$toast.error('Part number cannot be empty');
+		return false;
+	}
+	
+	if (schema.value) {
+		for (const i in schema.value.fields) {
+			const f = schema.value.fields[i];
+			if (f.required && f.elementType != 'checkbox' && !formData[i]) {
+				$toast.error(`Field "${f.label}" is required`);
+				return false;
+			}
+		}
+	}
+	
+	return true;
+}
+
+
 async function save() {
+	if (!validate()) return;
+	
 	submitting.value = true;
 	try {
-		
 		const data = prepareFormData();
-		
 		if (props.partID) {
 			// Update existing part
 			await $api.request('PUT', `parts/${props.partID}`, data);
@@ -156,8 +207,14 @@ onMounted(async () => {
 	loading.value = true;
 	try {
 		
+		// Check the number of schemas available
+		const partSchemas = Object.keys(PartSchemas.value);
+		const itemSchemas = Object.keys(ItemSchemas.value);
+		
+		
+		
 		if (props.partID) {
-			// Fetch part
+			// Modify existing part
 			const res = await $api.request('GET', `parts/${props.partID}`);
 			part.value = res;
 			
@@ -165,16 +222,36 @@ onMounted(async () => {
 			formData.partNum = res.partNum;
 			formData.category = res.category;
 			formData.description = res.description;
+			formData.itemSchema = res.itemSchema;
 			
 			// Fetch schema
 			if (res.formSchema) {
 				schema.value = await $schemaStore.resolve(res.formSchema);
 				if (!schema.value) throw 'invalid_schema';
+				schemaID.value = schema.value._id;
 				updateFormData();
 			}
-		} else {
-			// New part
+			showPartSchemaList.value = false;
+			if (itemSchemas.length < 2) showItemSchemaList.value = false;
 			
+		} else {
+			// New part creation
+			// Determine schema selection
+			if (partSchemas.length < 2) {
+				schema.value = await $schemaStore.resolve(partSchemas[0]);
+				if (partSchemas.length == 1) schemaID.value = schema.value._id;
+				showPartSchemaList.value = false;
+			} else {
+				showPartSchemaList.value = true;
+			}
+			
+			// Imply selection when there's only one type
+			if (itemSchemas.length < 2) {
+				if (itemSchemas.length == 1) formData.itemSchema = itemSchemas[0]._id;
+				showItemSchemaList.value = false;
+			} else {
+				showItemSchemaList.value = true;
+			}
 			
 		}
 		

@@ -1,6 +1,7 @@
 export default {
 	COMPANY_EDIT: 'companies',
 	SCHEMA_EDIT: 'schemas',
+	CONTACTS_EDIT: 'contacts',
 	
 	USER_EDIT: 'users',
 	

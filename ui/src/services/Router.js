@@ -7,6 +7,7 @@ import LoginRoutes from '@/views/Login/routes'
 import MiscRoutes from '@/views/Misc/routes'
 
 import PartRoutes from '@/views/Parts/routes'
+import ItemRoutes from '@/views/Items/routes'
 
 const routes = [{
 	// Home page
@@ -19,6 +20,7 @@ const routes = [{
 ...MiscRoutes,
 
 ...PartRoutes,
+...ItemRoutes,
 
 {
 	// Catch all

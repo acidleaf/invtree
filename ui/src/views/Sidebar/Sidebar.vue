@@ -1,9 +1,9 @@
 <template>
 	<div class="h-full flex flex-col">
-		<div class="py-2 mb-1 text-center border-b border-gray-200">
+		<div class="py-2 mb-1 text-center border-b border-adapt">
 			
 			<div class="text-sm text-gray-400">{{ appName }}</div>
-			<div v-if="isAuthenticated" class="text-xl font-medium mt-1 text-info">
+			<div v-if="isAuthenticated" class="text-xl font-semibold mt-1 text-accent">
 				<div>{{ userName }}</div>
 			</div>
 		</div>
@@ -19,7 +19,7 @@
 		<!-- Sign out link -->
 		<div v-if="isAuthenticated"
 			@click="signOut"
-			class="flex items-center gap-2 hover:bg-gray-200 transition-colors px-3 py-2 select-none cursor-pointer font-medium">
+			class="flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors px-3 py-2 select-none cursor-pointer font-medium">
 			<icon :data="mdiLogoutVariant" />
 			<div>Sign Out</div>
 		</div>

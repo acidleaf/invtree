@@ -7,8 +7,10 @@ import {
 	mdiBook,
 	mdiBookOpenVariant,
 	mdiAccount,
+	mdiScrewdriver,
 } from '@mdi/js'
 import { useAuthStore } from '@/store/Auth'
+import { UserScopes } from '@/utils/enums'
 
 
 
@@ -22,6 +24,18 @@ const baseLinks = [{
 	icon: mdiAccount,
 	label: 'User Profile',
 	path: '/profile'
+}, {
+	icon: mdiScrewdriver,
+	label: 'Parts',
+	links: [{
+		label: 'Part Management',
+		path: '/parts',
+		scopes: [ UserScopes.PARTS_VIEW, UserScopes.PARTS_EDIT ]
+	}, {
+		label: 'New Part Creation',
+		path: '/parts/new',
+		scopes: [ UserScopes.PARTS_EDIT ]
+	}]
 }];
 
 
