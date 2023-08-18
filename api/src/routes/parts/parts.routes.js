@@ -74,7 +74,7 @@ export default [{
 		return $res.json(part);
 	}
 }, {
-	// Creates a new item
+	// Creates a new part
 	method: 'POST',
 	path: '/parts',
 	scopes: [ UserScopes.PARTS_EDIT ],
@@ -104,8 +104,8 @@ export default [{
 			partNum: $req.body.partNum,
 			description: $req.body.description,
 			formSchema: schemaID,
-			active: true,
 			extended,
+			active: true,
 			created: new Date(),
 			updated: new Date(),
 		});
@@ -135,19 +135,18 @@ export default [{
 		if (part.formSchema) {
 			// Fetch schema
 			const schema = await FormSchema.findById(part.formSchema).lean();
-			
-			if (!part.extended) part.extended = new Types.Map();
+			if (!schema) return $res.error('invalid_schema');
 			
 			// Update extended data fields
+			if (!part.extended) part.extended = new Types.Map();
 			const extendedData = $req.body.extended || {};
 			
 			const fieldKeys = [];
 			for (const i in schema.fields) {
-				fieldKeys.push(i);
-				
 				// Update part extended data
 				if (extendedData[i] !== undefined) part.extended.set(i, extendedData[i]);
 				else part.extended.set(i, schema.fields[i].default || null);
+				fieldKeys.push(i);
 			}
 			
 			// Remove extended data not in fieldKeys

@@ -7,7 +7,7 @@
 		<div v-else>
 			
 			<!-- Fixed fields -->
-			<div class="space-y-3">
+			<div class="space-y-3 mb-3">
 				
 				<!-- Schema selection -->
 				<div v-if="showPartSchemaList">
@@ -49,15 +49,7 @@
 			</div>
 			
 			<!-- Extended fields -->
-			<div v-if="schema" class="space-y-3">
-				<div v-for="lt in schema.layout" class="md:flex md:gap-2 md:items-start md:justify-stretch md:space-y-0 space-y-3">
-					<DynamicFormField
-						class="flex-grow"
-						v-for="itemKey in lt"
-						v-bind="{ schemaField: schema.fields[itemKey] }"
-						v-model="formData[itemKey]" />
-				</div>
-			</div>
+			<FormSchemaEdit v-bind="{ schema, formData }" />
 			
 			<hr>
 			<div class="space-x-2">
@@ -69,13 +61,13 @@
 </template>
 <script setup>
 import Container from '@/layouts/Container.vue'
-import DynamicFormField from '@/components/DynamicFormField.vue'
 import { $api, $toast } from '@/services'
 import { onMounted, ref, reactive, watch } from 'vue'
 import { useConstantsStore } from '@/store/Constants'
 import { useSchemaStore } from '@/store/Schema'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
+import FormSchemaEdit from '@/components/FormSchema/FormSchemaEdit.vue'
 
 const $router = useRouter();
 const $schemaStore = useSchemaStore();

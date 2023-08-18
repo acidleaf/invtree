@@ -32,7 +32,7 @@
 					}" />
 				
 				<tbody>
-					<tr v-if="!parts.length">
+					<tr v-if="!parts.length" class="border-b border-adapt">
 						<td :colspan="headers.length">No records available</td>
 					</tr>
 					

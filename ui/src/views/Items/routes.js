@@ -1,6 +1,7 @@
 import NestedRoutes from '@/layouts/NestedRoutes.vue'
 import ItemList from './ItemList/ItemList.vue'
 import ItemForm from './ItemForm/ItemForm.vue'
+import ItemView from './ItemView/ItemView.vue'
 import { UserScopes } from '@/utils/enums'
 
 export default [{
@@ -14,8 +15,9 @@ export default [{
 		path: '',
 		component: ItemList,
 	}, {
-		path: 'new',
+		path: 'new/:partID',
 		component: ItemForm,
+		props: true,
 		meta: {
 			title: 'New Item Creation',
 			scopes: [ UserScopes.ITEMS_EDIT ]
@@ -27,6 +29,14 @@ export default [{
 		meta: {
 			title: 'Modify Item',
 			scopes: [ UserScopes.ITEMS_EDIT ]
+		}
+	}, {
+		path: 'view/:itemID',
+		component: ItemView,
+		props: true,
+		meta: {
+			title: 'Item Details',
+			scopes: [ UserScopes.ITEMS_VIEW, UserScopes.ITEMS_EDIT ]
 		}
 	}]
 }]

@@ -1,13 +1,9 @@
 import { computed } from 'vue'
 import {
 	mdiViewDashboard,
-	mdiAccountMultiple,
-	mdiCalendar,
-	mdiSchool,
-	mdiBook,
-	mdiBookOpenVariant,
 	mdiAccount,
 	mdiScrewdriver,
+	mdiBookshelf,
 } from '@mdi/js'
 import { useAuthStore } from '@/store/Auth'
 import { UserScopes } from '@/utils/enums'
@@ -35,6 +31,14 @@ const baseLinks = [{
 		label: 'New Part Creation',
 		path: '/parts/new',
 		scopes: [ UserScopes.PARTS_EDIT ]
+	}]
+}, {
+	icon: mdiBookshelf,
+	label: 'Inventory',
+	links: [{
+		label: 'Inventory Management',
+		path: '/items',
+		scopes: [ UserScopes.ITEMS_VIEW, UserScopes.ITEMS_EDIT ]
 	}]
 }];
 

@@ -4,7 +4,7 @@
 <script setup>
 import { h } from 'vue'
 import { mdiCircleOutline, mdiCheckboxBlank, mdiCheckboxMarked, mdiCircleSlice8 } from '@mdi/js'
-import Icon from './Icon.vue'
+import Icon from '@/components/Icon.vue'
 
 const props = defineProps([ 'schemaField', 'value' ]);
 
