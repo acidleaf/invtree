@@ -74,10 +74,10 @@ const canEdit = computed(() => {
 });
 
 async function deactivatePart() {
-	if (!props.part) return;
+	if (!props.partID) return;
 	
 	const confirm = await $confirm({
-		title: 'Inactive Part',
+		title: 'Deactivate Part',
 		message: 'Confirm to deactivate this part?',
 		buttons: 'YES_NO',
 	});
@@ -85,7 +85,7 @@ async function deactivatePart() {
 	
 	submitting.value = true;
 	try {
-		await $api.request('DELETE', `parts/${props.part._id}`);
+		await $api.request('DELETE', `parts/${props.partID}`);
 		$router.replace('/parts');
 		$toast.info('Part deactivated');
 		
