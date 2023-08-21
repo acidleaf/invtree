@@ -8,6 +8,8 @@ import MiscRoutes from '@/views/Misc/routes'
 
 import PartRoutes from '@/views/Parts/routes'
 import ItemRoutes from '@/views/Items/routes'
+import LoanRoutes from '@/views/Loans/routes'
+
 
 const routes = [{
 	// Home page
@@ -21,6 +23,7 @@ const routes = [{
 
 ...PartRoutes,
 ...ItemRoutes,
+...LoanRoutes,
 
 {
 	// Catch all

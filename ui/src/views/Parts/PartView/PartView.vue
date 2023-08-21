@@ -18,7 +18,7 @@
 import Container from '@/layouts/Container.vue'
 import TabBar from '@/components/TabBar.vue'
 import PartDetails from './PartDetails.vue'
-import PartItems from './PartItems.vue'
+import PartInventory from './PartInventory.vue'
 import { ref } from 'vue'
 
 const props = defineProps([ 'partID' ]);
@@ -29,9 +29,9 @@ const tabs = {
 		label: 'Part Details',
 		component: PartDetails,
 	},
-	items: {
-		label: 'Usage',
-		component: PartItems,
+	inventory: {
+		label: 'Inventory',
+		component: PartInventory,
 	}
 };
 

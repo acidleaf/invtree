@@ -2,7 +2,7 @@
 	<div>
 		<Navbar />
 		
-		<Breadcrumbs />
+		<Breadcrumbs v-if="$authStore.isAuthenticated" />
 		<NestedRoutes />
 		
 		
@@ -21,6 +21,9 @@ import SidebarContainer from '@/components/SidebarContainer.vue'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
 import Sidebar from '@/views/Sidebar/Sidebar.vue'
 import NestedRoutes from './layouts/NestedRoutes.vue'
+import { useAuthStore } from './store/Auth'
+
+const $authStore = useAuthStore();
 
 
 </script>

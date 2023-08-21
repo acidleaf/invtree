@@ -10,22 +10,19 @@
 					<!-- Part number -->
 					<div>
 						<label class="label">Part Number</label>
-						<input type="text" class="input w-full" :value="part.partNum" readonly placeholder="Part number">
+						<div class="input w-full">{{ part.partNum }}</div>
 					</div>
 					
 					<!-- Category -->
 					<div>
 						<label class="label">Category</label>
-						<input type="text" class="input w-full"
-							readonly
-							placeholder="Part category"
-							:value="PartCategoryMap[part.category] ? PartCategoryMap[part.category].name : 'Uncategorized'">
+						<div class="input w-full">{{ PartCategoryMap[part.category] ? PartCategoryMap[part.category].name : 'Uncategorized' }}</div>
 					</div>
 					
 					<!-- Part description -->
 					<div>
 						<label class="label">Description</label>
-						<textarea class="input w-full h-fit" :value="part.description" readonly placeholder="Part description"></textarea>
+						<div class="input w-full whitespace-pre-wrap">{{ part.description }}</div>
 					</div>
 				</div>
 				
@@ -39,7 +36,7 @@
 				<div class="space-y-3 mb-3">
 					<div>
 						<label class="label">Serial Number</label>
-						<input type="text" class="input w-full h-fit" :value="item.serialNum" readonly placeholder="Serial number">
+						<div class="input w-full">{{ item.serialNum }}</div>
 					</div>
 				</div>
 				
@@ -61,6 +58,7 @@
 <script setup>
 import FormSchemaView from '@/components/FormSchema/FormSchemaView.vue'
 import { $api, $toast } from '@/services'
+import { useAuthStore } from '@/store/Auth'
 import { useConstantsStore } from '@/store/Constants'
 import { useSchemaStore } from '@/store/Schema'
 import { UserScopes } from '@/utils/enums'

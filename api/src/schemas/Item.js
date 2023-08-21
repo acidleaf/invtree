@@ -18,7 +18,6 @@ export default new Schema({
 		index: true,
 	},
 	
-	
 	formSchema: {
 		type: Schema.Types.ObjectId,
 		ref: 'FormSchema',

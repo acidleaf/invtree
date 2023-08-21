@@ -3,18 +3,30 @@
 </template>
 <script setup>
 import { h } from 'vue'
+import { mdiCircleOutline, mdiCheckboxBlank, mdiCheckboxMarked, mdiCircleSlice8 } from '@mdi/js'
+import Icon from '@/components/Icon.vue'
 
-const props = defineProps([ 'schemaField', 'modelValue' ]);
+const props = defineProps([ 'schemaField', 'modelValue', 'value' ]);
 const $emit = defineEmits([ 'update:modelValue' ]);
 
 function render() {
 	const sf = props.schemaField;
 	if (!sf) return h();
 	
-	if (sf.elementType == 'text') return renderText();
-	else if (sf.elementType == 'radio') return renderRadio();
-	else if (sf.elementType == 'checkbox') return renderCheckbox();
-	else if (sf.elementType == 'textarea') return renderTextarea();
+	if (props.modelValue) {
+		// Render editable if using v-model
+		if (sf.elementType == 'text') return renderText();
+		else if (sf.elementType == 'radio') return renderRadio();
+		else if (sf.elementType == 'checkbox') return renderCheckbox();
+		else if (sf.elementType == 'textarea') return renderTextarea();
+	} else if (props.value) {
+		// Render readonly if using :value
+		if (sf.elementType == 'text') return renderTextView();
+		else if (sf.elementType == 'radio') return renderRadioView();
+		else if (sf.elementType == 'checkbox') return renderCheckboxView();
+		else if (sf.elementType == 'textarea') return renderTextareaView();
+	}
+	
 	return h();
 }
 
@@ -42,6 +54,18 @@ function renderText() {
 		})
 	]);
 }
+function renderTextView() {
+	const sf = props.schemaField;
+	return h('div', [
+		h('label', { class: 'label' }, [ sf.label ]),
+		h('div', {
+			class: 'input w-full whitespace-pre-wrap',
+		}, [ props.value ])
+	]);
+}
+
+
+
 
 function renderTextarea() {
 	// Similar to renderText
@@ -58,6 +82,17 @@ function renderTextarea() {
 		})
 	]);
 }
+function renderTextareaView() {
+	// Similar to renderText
+	const sf = props.schemaField;
+	return h('div', [
+		h('label', { class: 'label' }, [ sf.label ]),
+		h('div', {
+			class: 'input w-full whitespace-pre-wrap',
+		}, [ props.value ])
+	]);
+}
+
 
 
 function renderRadio() {
@@ -92,6 +127,25 @@ function renderRadio() {
 		}),
 	]);
 }
+function renderRadioView() {
+	const sf = props.schemaField;
+	return h('div', [
+		h('label', { class: 'label' }, [ sf.label ]),
+		...sf.choices.map(c => {
+			const checked = props.value == c.key;
+			return h('div', [
+				h('label', { class: 'inline-flex items-center select-none' }, [
+					h(Icon, {
+						data: checked ? mdiCircleSlice8 : mdiCircleOutline,
+						class: checked ? `text-accent` : '',
+					}),
+					h('span', { class: 'font-medium ml-2' }, [ c.value ]),
+				])
+			]);
+		}),
+	]);
+}
+
 
 
 
@@ -111,6 +165,16 @@ function renderCheckbox() {
 			onInput: ev => {
 				$emit('update:modelValue', props.modelValue ? false : true);
 			}
+		}),
+		h('span', { class: 'font-medium ml-2' }, [ sf.label ]),
+	]);
+}
+function renderCheckboxView() {
+	const sf = props.schemaField;
+	return h('label', { class: 'inline-flex items-center select-none' }, [
+		h(Icon, {
+			data: props.value ? mdiCheckboxMarked : mdiCheckboxBlank,
+			class: props.value ? `text-accent` : '',
 		}),
 		h('span', { class: 'font-medium ml-2' }, [ sf.label ]),
 	]);

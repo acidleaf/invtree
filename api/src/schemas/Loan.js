@@ -14,6 +14,15 @@ export default new Schema({
 		index: true,
 	},
 	
+	formSchema: {
+		type: Schema.Types.ObjectId,
+		ref: 'FormSchema',
+	},
+	extended: {
+		type: Map,
+		of: Schema.Types.Mixed
+	},
+	
 	// Loan's current status
 	status: {
 		type: String,
@@ -24,6 +33,25 @@ export default new Schema({
 	// Loan item records
 	items: [ LoanItem ],
 	
+	
+	// Stored as date strings: YYYY-MM-DD
+	// When the record was created
+	loanDate: {
+		type: String,
+		index: true,
+	},
+	// When the loan is due (supposed to be returned)
+	dueDate: {
+		type: String,
+		index: true,
+	},
+	
+	// When the loan was actually closed
+	returnDate: {
+		type: String,
+		index: true,
+		default: null,
+	},
 	
 	// The user this loan was created on behalf of
 	requestedBy: {
@@ -39,10 +67,8 @@ export default new Schema({
 		index: true,
 	},
 	
-	
-	loanDate: Schema.Types.Date,			// When the record was created
-	dueDate: Schema.Types.Date,				// When the loan is due (supposed to be returned)
-	returnDate: Schema.Types.Date,			// When the loan was actually closed
+	created: Schema.Types.Date,
+	closed: Schema.Types.Date,
 	
 }, {
 	collection: 'loans'

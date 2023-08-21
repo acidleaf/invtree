@@ -10,4 +10,7 @@ export default {
 	
 	ITEMS_VIEW: 'items:view',
 	ITEMS_EDIT: 'items:edit',
+	
+	LOANS_VIEW: 'loans:view',
+	LOANS_EDIT: 'loans:edit',
 };

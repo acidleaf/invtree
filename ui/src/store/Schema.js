@@ -27,6 +27,14 @@ export const useSchemaStore = defineStore('schema', {
 			}
 			return schemas;
 		},
+		LoanSchemas() {
+			const schemas = {};
+			for (const i in this.schemas) {
+				const s = this.schemas[i];
+				if (s.type == 'loan') schemas[i] = s;
+			}
+			return schemas;
+		}
 	},
 	actions: {
 		load(schemas) {

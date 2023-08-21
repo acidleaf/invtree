@@ -27,7 +27,6 @@
 					<input type="text" class="input w-full" v-model.trim="formData.serialNum" placeholder="Item serial number">
 				</div>
 				
-				
 			</div>
 			
 			<FormSchemaEdit v-bind="{ schema: itemSchema, formData }" />
@@ -44,7 +43,6 @@
 	</Container>
 </template>
 <script setup>
-import DynamicFormField from '@/components/FormSchema/DynamicFormField.vue'
 import FormSchemaEdit from '@/components/FormSchema/FormSchemaEdit.vue'
 import Container from '@/layouts/Container.vue'
 import { $api, $toast } from '@/services'
