@@ -5,7 +5,7 @@ export async function loadTheme() {
 	const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 	
 	// Check if theme is already set
-	const theme = localStorage.getItem('theme');
+	let theme = localStorage.getItem('theme');
 	if (![ 'dark', 'light' ].includes(theme)) {
 		theme = prefersDarkMode ? 'dark' : 'light';
 	}

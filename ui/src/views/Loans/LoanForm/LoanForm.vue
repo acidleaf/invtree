@@ -79,12 +79,12 @@ const formData = reactive({
 
 
 function updateFormData() {
-	if (!schema.value || !loan.value) return;
+	if (!schema.value) return;
 	
 	const sch = schema.value;
 	for (const i in sch.fields) {
 		let value = '';
-		if (loan.value.extended && loan.value.extended[i]) value = loan.value.extended[i];
+		if (loan.value && loan.value.extended && loan.value.extended[i]) value = loan.value.extended[i];
 		formData[i] = value;
 	}
 }

@@ -3,6 +3,7 @@ import {
 	mdiViewDashboard,
 	mdiAccount,
 	mdiScrewdriver,
+	mdiCreditCard,
 	mdiBookshelf,
 } from '@mdi/js'
 import { useAuthStore } from '@/store/Auth'
@@ -39,6 +40,18 @@ const baseLinks = [{
 		label: 'Inventory Management',
 		path: '/items',
 		scopes: [ UserScopes.ITEMS_VIEW, UserScopes.ITEMS_EDIT ]
+	}]
+}, {
+	icon: mdiCreditCard,
+	label: 'Loans',
+	links: [{
+		label: 'Loans Management',
+		path: '/loans',
+		scopes: [ UserScopes.LOANS_VIEW, UserScopes.LOANS_EDIT ]
+	}, {
+		label: 'New Loan',
+		path: '/loans/new',
+		scopes: [ UserScopes.LOANS_EDIT ]
 	}]
 }];
 

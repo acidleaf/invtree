@@ -13,13 +13,13 @@ function render() {
 	const sf = props.schemaField;
 	if (!sf) return h();
 	
-	if (props.modelValue) {
+	if (props.modelValue !== undefined) {
 		// Render editable if using v-model
 		if (sf.elementType == 'text') return renderText();
 		else if (sf.elementType == 'radio') return renderRadio();
 		else if (sf.elementType == 'checkbox') return renderCheckbox();
 		else if (sf.elementType == 'textarea') return renderTextarea();
-	} else if (props.value) {
+	} else if (props.value !== undefined) {
 		// Render readonly if using :value
 		if (sf.elementType == 'text') return renderTextView();
 		else if (sf.elementType == 'radio') return renderRadioView();
@@ -27,7 +27,7 @@ function render() {
 		else if (sf.elementType == 'textarea') return renderTextareaView();
 	}
 	
-	return h();
+	return h('div');
 }
 
 
